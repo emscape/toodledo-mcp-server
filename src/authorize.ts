@@ -16,6 +16,7 @@ import * as http from 'http';
 import { URL } from 'url';
 import { exchangeAuthorizationCode } from './oauth.js';
 import { createFileTokenStore } from './tokenStore.js';
+import { isMain } from './isMain.js';
 
 // quiet: dotenv v17 logs "injected env" (plus promotional tips) by default;
 // keep the CLI output clean, consistent with index.ts and client.ts.
@@ -79,7 +80,8 @@ export function validateState(actual: string | null, expected: string): boolean 
  */
 export async function openBrowser(url: string): Promise<boolean> {
   const platform = process.platform as NodeJS.Platform;
-  const cmd = platform === 'win32' ? 'start' : platform === 'darwin' ? 'open' : 'xdg-open';
+  // On Windows, `start` treats its first quoted argument as the window title.
+  const cmd = platform === 'win32' ? 'start ""' : platform === 'darwin' ? 'open' : 'xdg-open';
 
   try {
     await import('child_process').then((cp) => cp.execSync(`${cmd} "${url}"`));
@@ -244,7 +246,7 @@ function printClaudeCodeSnippet(): void {
 }
 
 // CLI entry point — only runs when invoked directly.
-if (import.meta.url === `file://${process.argv[1]}`) {
+if (isMain(import.meta.url)) {
   runAuthorize().catch((err) => {
     console.error('Fatal error during authorization:', err);
     process.exit(1);

@@ -6,6 +6,7 @@ import {
 } from "@modelcontextprotocol/sdk/types.js";
 import * as dotenv from "dotenv";
 import { ToodledoClient } from "./client.js";
+import { isMain } from "./isMain.js";
 
 // quiet: dotenv v17 logs "injected env" to stdout by default, which corrupts
 // the stdio JSON-RPC transport
@@ -712,7 +713,7 @@ export async function main() {
   console.error("Toodledo MCP Server running on stdio");
 }
 
-if (import.meta.url === `file://${process.argv[1]}`) {
+if (isMain(import.meta.url)) {
   main().catch((error) => {
     console.error("Fatal error in main():", error);
     process.exit(1);
