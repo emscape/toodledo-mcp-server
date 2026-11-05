@@ -16,11 +16,11 @@ import * as http from 'http';
 import { URL } from 'url';
 import { exchangeAuthorizationCode } from './oauth.js';
 import { createFileTokenStore } from './tokenStore.js';
-import { isMain } from './isMain.js';
+import { isMain, projectEnvPath } from './isMain.js';
 
 // quiet: dotenv v17 logs "injected env" (plus promotional tips) by default;
 // keep the CLI output clean, consistent with index.ts and client.ts.
-dotenv.config({ quiet: true });
+dotenv.config({ quiet: true, path: ['.env', projectEnvPath] });
 
 const DEFAULT_REDIRECT_URI = 'http://127.0.0.1:8585/callback';
 const DEFAULT_SCOPE = 'basic tasks notes outlines lists write';

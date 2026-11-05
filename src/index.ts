@@ -6,11 +6,11 @@ import {
 } from "@modelcontextprotocol/sdk/types.js";
 import * as dotenv from "dotenv";
 import { ToodledoClient } from "./client.js";
-import { isMain } from "./isMain.js";
+import { isMain, projectEnvPath } from "./isMain.js";
 
 // quiet: dotenv v17 logs "injected env" to stdout by default, which corrupts
 // the stdio JSON-RPC transport
-dotenv.config({ quiet: true });
+dotenv.config({ quiet: true, path: [".env", projectEnvPath] });
 
 /**
  * Build the Toodledo MCP server: registers all 17 tools (CRUD for tasks,

@@ -16,3 +16,8 @@ export function isMain(moduleUrl: string): boolean {
   return process.platform === 'win32' ? a.toLowerCase() === b.toLowerCase() : a === b;
 }
 
+/**
+ * The project's own .env, so credentials load however the MCP host sets the
+ * working directory. A .env in the working directory still takes precedence.
+ */
+export const projectEnvPath = fileURLToPath(new URL('../.env', import.meta.url));
