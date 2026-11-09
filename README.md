@@ -57,26 +57,22 @@ Windows: `%APPDATA%\Claude\claude_desktop_config.json`) and add under
   "mcpServers": {
     "toodledo": {
       "command": "node",
-      "args": ["/absolute/path/to/toodledo-mcp-server/build/index.js"],
-      "env": {
-        "TOODLEDO_CLIENT_ID": "your_client_id",
-        "TOODLEDO_CLIENT_SECRET": "your_client_secret"
-      }
+      "args": ["/absolute/path/to/toodledo-mcp-server/build/index.js"]
     }
   }
 }
 ```
 
-Pass the credentials explicitly in `env` as shown — MCP hosts launch the
-server from an arbitrary working directory, so it cannot find your `.env`
-on its own. Restart Claude Desktop after editing.
+The server reads the `.env` in the project root (next to `package.json`),
+whatever working directory the host launches it from, so the credentials stay
+out of the host's config. A `.env` in the working directory, or variables set
+in an `env` block here, take precedence over it. Restart Claude Desktop after
+editing.
 
 **Claude Code**:
 
 ```sh
 claude mcp add toodledo -s user \
-  -e TOODLEDO_CLIENT_ID=your_client_id \
-  -e TOODLEDO_CLIENT_SECRET=your_client_secret \
   -- node /absolute/path/to/toodledo-mcp-server/build/index.js
 ```
 
